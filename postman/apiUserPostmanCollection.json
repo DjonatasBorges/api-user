@@ -1,0 +1,534 @@
+{
+	"info": {
+		"_postman_id": "b079ee65-4923-43a0-a23f-bb1911550315",
+		"name": "API User",
+		"description": "API for test.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15503513"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Novo Usuário\",\n  \"lastname\": \"Sobrenome\",\n  \"cpf\": \"12345678900\",\n  \"email\": \"novo.usuario@example.com\",\n  \"phone\": \"999999999\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localHost}}/users",
+							"host": [
+								"{{localHost}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Created.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": -80937788.84206544,\n  \"username\": \"consectetur enim incididunt\",\n  \"email\": \"OU9AqJr@baxSlFZVjwPX.udaw\",\n  \"password\": \"qui elit\",\n  \"userStatus\": 86576092.84950909,\n  \"firstName\": \"culpa Ut\",\n  \"lastName\": \"consequat dolor eiusmod sunt\",\n  \"phone\": \"laborum aliqua\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "userId",
+									"value": "cupidatat sint non in in",
+									"description": "Generated user."
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Bad Request.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": -80937788.84206544,\n  \"username\": \"consectetur enim incididunt\",\n  \"email\": \"OU9AqJr@baxSlFZVjwPX.udaw\",\n  \"password\": \"qui elit\",\n  \"userStatus\": 86576092.84950909,\n  \"firstName\": \"culpa Ut\",\n  \"lastName\": \"consequat dolor eiusmod sunt\",\n  \"phone\": \"laborum aliqua\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"code\": \"deserunt \",\n    \"description\": \"ad consequat fugiat\"\n  },\n  {\n    \"code\": \"labore quis laboris ad\",\n    \"description\": \"id dolore exercitation sit\"\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "GET All User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{localHost}}/users",
+							"host": [
+								"{{localHost}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ok.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "cupidatat sint non in in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": -22099130.204079792,\n  \"username\": \"culpa anim\",\n  \"firstName\": \"id\",\n  \"lastName\": \"cillum dolor laboris\",\n  \"email\": \"9kTEnthmNWy16oG@oYMxtJFZ.gnh\",\n  \"phone\": \"cupidatat nulla officia\",\n  \"userStatus\": 15601412.75489162\n}"
+						},
+						{
+							"name": "Bad Request.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "cupidatat sint non in in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"code\": \"deserunt \",\n    \"description\": \"ad consequat fugiat\"\n  },\n  {\n    \"code\": \"labore quis laboris ad\",\n    \"description\": \"id dolore exercitation sit\"\n  }\n]"
+						},
+						{
+							"name": "Not Found.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "cupidatat sint non in in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"code\": \"deserunt \",\n    \"description\": \"ad consequat fugiat\"\n  },\n  {\n    \"code\": \"labore quis laboris ad\",\n    \"description\": \"id dolore exercitation sit\"\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get User By Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{localHost}}/users/:id",
+							"host": [
+								"{{localHost}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "fa28c2e5-b743-4e62-a23e-63af7de31516"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ok.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "cupidatat sint non in in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": -22099130.204079792,\n  \"username\": \"culpa anim\",\n  \"firstName\": \"id\",\n  \"lastName\": \"cillum dolor laboris\",\n  \"email\": \"9kTEnthmNWy16oG@oYMxtJFZ.gnh\",\n  \"phone\": \"cupidatat nulla officia\",\n  \"userStatus\": 15601412.75489162\n}"
+						},
+						{
+							"name": "Bad Request.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "cupidatat sint non in in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"code\": \"deserunt \",\n    \"description\": \"ad consequat fugiat\"\n  },\n  {\n    \"code\": \"labore quis laboris ad\",\n    \"description\": \"id dolore exercitation sit\"\n  }\n]"
+						},
+						{
+							"name": "Not Found.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "cupidatat sint non in in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"code\": \"deserunt \",\n    \"description\": \"ad consequat fugiat\"\n  },\n  {\n    \"code\": \"labore quis laboris ad\",\n    \"description\": \"id dolore exercitation sit\"\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{localHost}}/users/:id",
+							"host": [
+								"{{localHost}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "fa28c2e5-b743-4e62-a23e-63af7de31516"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ok.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "cupidatat sint non in in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": -22099130.204079792,\n  \"username\": \"culpa anim\",\n  \"firstName\": \"id\",\n  \"lastName\": \"cillum dolor laboris\",\n  \"email\": \"9kTEnthmNWy16oG@oYMxtJFZ.gnh\",\n  \"phone\": \"cupidatat nulla officia\",\n  \"userStatus\": 15601412.75489162\n}"
+						},
+						{
+							"name": "Bad Request.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "cupidatat sint non in in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"code\": \"deserunt \",\n    \"description\": \"ad consequat fugiat\"\n  },\n  {\n    \"code\": \"labore quis laboris ad\",\n    \"description\": \"id dolore exercitation sit\"\n  }\n]"
+						},
+						{
+							"name": "Not Found.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/:username",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										":username"
+									],
+									"variable": [
+										{
+											"key": "username",
+											"value": "cupidatat sint non in in",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"code\": \"deserunt \",\n    \"description\": \"ad consequat fugiat\"\n  },\n  {\n    \"code\": \"labore quis laboris ad\",\n    \"description\": \"id dolore exercitation sit\"\n  }\n]"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://exemplo.com.br",
+			"type": "string"
+		}
+	]
+}

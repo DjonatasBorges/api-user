@@ -1,0 +1,20 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=user-api
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./migrations:/docker-entrypoint-initdb.d
+
+  api-user:
+    build:
+      context: .
+    ports:
+      - "8000:8080" # Alterei a porta externa para 8000 para corresponder à configuração da API.
+    depends_on:
+      - postgres
