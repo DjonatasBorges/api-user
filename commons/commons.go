@@ -1,6 +1,8 @@
 package commons
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -15,4 +17,32 @@ func WriteJSONResponse(w http.ResponseWriter, statusCode int, data interface{}) 
 	if err := json.NewEncoder(w).Encode(data); err != nil {
 		HandleServerError(w, err)
 	}
+}
+
+// AuthErrorResponse representa a estrutura da resposta de erro de autenticação.
+type AuthErrorResponse struct {
+	Error string `json:"error"`
+}
+
+// HandleAuthError envia uma resposta JSON para o cliente indicando um erro de autenticação.
+func HandleAuthError(w http.ResponseWriter, err error) {
+	response := AuthErrorResponse{
+		Error: err.Error(),
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusUnauthorized)
+	json.NewEncoder(w).Encode(response)
+}
+
+func GenerateRandomKey(length int) (string, error) {
+	key := make([]byte, length)
+	_, err := rand.Read(key)
+	if err != nil {
+		return "", err
+	}
+
+	// Encode em base64 para tornar a chave mais amigável para uso em strings.
+	encodedKey := base64.RawStdEncoding.EncodeToString(key)
+	return encodedKey, nil
 }

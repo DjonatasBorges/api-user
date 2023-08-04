@@ -26,6 +26,10 @@ func (e *AppError) WithArgs(args ...interface{}) *AppError {
 }
 
 var (
-	ErrUserNotFound = NewAppError(1001, "%s not found")
-	ErrInvalidUUID  = &AppError{Code: 1002, Message: "Invalid UUID"}
+	ErrUserNotFound         = NewAppError(1001, "%s not found")
+	ErrInvalidUUID          = &AppError{Code: 1002, Message: "Invalid UUID"}
+	ErrMissingAuthToken     = NewAppError(1003, "Missing authentication token")
+	ErrInvalidAuthHeader    = NewAppError(1004, "Invalid authorization header")
+	ErrInvalidSigningMethod = NewAppError(1005, "Invalid signing method")
+	ErrInvalidAuthToken     = NewAppError(1006, "Invalid authentication token")
 )

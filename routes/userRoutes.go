@@ -1,23 +1,20 @@
 package routes
 
 import (
-	"log"
-	"net/http"
-
 	"github.com/DjonatasBorges/api-user/controllers"
 	"github.com/DjonatasBorges/api-user/middleware"
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
-func HandleRequests() {
-	r := mux.NewRouter()
-	r.Use(middleware.ContentTypeMiddleware)
+func SetupUsersRoutes(r *mux.Router) {
 
-	r.HandleFunc("/users", controllers.GetAllUsers).Methods("Get")
-	r.HandleFunc("/users/{id}", controllers.GetUserById).Methods("Get")
-	r.HandleFunc("/users", controllers.PostUser).Methods("Post")
-	r.HandleFunc("/users/{id}", controllers.DeleteUser).Methods("Delete")
+	r.HandleFunc("/users", controllers.PostUser).Methods("POST")
 
-	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(handlers.AllowedOrigins([]string{"*"}))(r)))
+	protectedRoutes := r.PathPrefix("/users").Subrouter()
+
+	protectedRoutes.Use(middleware.AuthenticationMiddleware)
+
+	protectedRoutes.HandleFunc("", controllers.GetAllUsers).Methods("GET")
+	protectedRoutes.HandleFunc("/{id}", controllers.GetUserById).Methods("GET")
+	protectedRoutes.HandleFunc("/{id}", controllers.DeleteUser).Methods("DELETE")
 }

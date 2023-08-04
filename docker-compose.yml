@@ -12,9 +12,8 @@ services:
       - ./migrations:/docker-entrypoint-initdb.d
 
   api-user:
-    build:
-      context: .
+    image: golang:1.20
     ports:
-      - "8000:8080" # Alterei a porta externa para 8000 para corresponder à configuração da API.
+      - "8000:8080"
     depends_on:
       - postgres

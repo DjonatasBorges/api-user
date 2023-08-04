@@ -22,12 +22,12 @@ func SaveUser(newUser models.User) (*models.User, error) {
 	db := database.ConnectDB()
 
 	query := `
-		INSERT INTO users (name, lastname, cpf, email, phone)
-		VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO users (name, lastname, cpf, email, phone, password)
+		VALUES ($1, $2, $3, $4, $5, $6)
 		RETURNING id
 	`
 	var id string
-	err := db.QueryRow(query, newUser.Name, newUser.Lastname, newUser.Cpf, newUser.Email, newUser.Phone).Scan(&id)
+	err := db.QueryRow(query, newUser.Name, newUser.Lastname, newUser.Cpf, newUser.Email, newUser.Phone, newUser.Password).Scan(&id)
 	if err != nil {
 		return nil, err
 	}
@@ -65,4 +65,17 @@ func DeleteUser(uuid uuid.UUID) error {
 	db.Close()
 
 	return nil
+}
+
+func GetUserByEmail(email string) (*sql.Rows, error) {
+	db := database.ConnectDB()
+
+	query := "SELECT * FROM users WHERE email = $1"
+	rows, err := db.Query(query, email)
+	if err != nil {
+		return nil, err
+	}
+
+	db.Close()
+	return rows, nil
 }

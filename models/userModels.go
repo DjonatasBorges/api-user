@@ -11,4 +11,5 @@ type User struct {
 	Cpf      string    `json:"cpf"`
 	Email    string    `json:"email"`
 	Phone    string    `json:"phone"`
+	Password string    `json:"password"`
 }

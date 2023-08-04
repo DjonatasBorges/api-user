@@ -18,7 +18,7 @@ func GetAllUsers() ([]models.User, error) {
 	var users []models.User
 	for rows.Next() {
 		var user models.User
-		if err := rows.Scan(&user.ID, &user.Name, &user.Lastname, &user.Cpf, &user.Email, &user.Phone); err != nil {
+		if err := rows.Scan(&user.ID, &user.Name, &user.Lastname, &user.Cpf, &user.Email, &user.Phone, &user.Password); err != nil {
 			return nil, err
 		}
 		users = append(users, user)
@@ -39,7 +39,7 @@ func GetUserById(id uuid.UUID) (*models.User, error) {
 	row := repositories.GetUserById(id)
 
 	var user models.User
-	err := row.Scan(&user.ID, &user.Name, &user.Lastname, &user.Cpf, &user.Email, &user.Phone)
+	err := row.Scan(&user.ID, &user.Name, &user.Lastname, &user.Cpf, &user.Email, &user.Phone, &user.Password)
 	if err != nil {
 		log.Println("Error fetching user:", err)
 		return nil, errors.ErrUserNotFound.WithArgs("User")
@@ -50,4 +50,23 @@ func GetUserById(id uuid.UUID) (*models.User, error) {
 
 func DeleteUser(uuid uuid.UUID) error {
 	return repositories.DeleteUser(uuid)
+}
+
+func GetUserByEmail(email string) (*models.User, error) {
+	rows, err := repositories.GetUserByEmail(email)
+	if err != nil {
+		return nil, err
+	}
+
+	var user models.User
+	if rows.Next() {
+		if err := rows.Scan(&user.ID, &user.Name, &user.Lastname, &user.Cpf, &user.Email, &user.Phone, &user.Password); err != nil {
+			log.Println("Error fetching user:", err)
+			return nil, errors.ErrUserNotFound.WithArgs("User")
+		}
+	} else {
+		return nil, errors.ErrUserNotFound.WithArgs("User")
+	}
+
+	return &user, nil
 }
