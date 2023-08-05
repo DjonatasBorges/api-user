@@ -54,18 +54,16 @@ func DeleteUser(uuid uuid.UUID) error {
 
 func GetUserByEmail(email string) (*models.User, error) {
 	rows, err := repositories.GetUserByEmail(email)
+
 	if err != nil {
-		return nil, err
+		return nil, errors.NewAppError(1009, "Usuário não encontrado")
 	}
 
 	var user models.User
-	if rows.Next() {
-		if err := rows.Scan(&user.ID, &user.Name, &user.Lastname, &user.Cpf, &user.Email, &user.Phone, &user.Password); err != nil {
-			log.Println("Error fetching user:", err)
-			return nil, errors.ErrUserNotFound.WithArgs("User")
-		}
-	} else {
-		return nil, errors.ErrUserNotFound.WithArgs("User")
+
+	if error := rows.Scan(&user.ID, &user.Name, &user.Lastname, &user.Cpf, &user.Email, &user.Phone, &user.Password); err != nil {
+		log.Println("Erro ao buscar usuário:", error)
+		return nil, errors.ErrUserNotFound.WithArgs("Usuário")
 	}
 
 	return &user, nil

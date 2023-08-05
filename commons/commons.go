@@ -6,6 +6,10 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strings"
+
+	"github.com/DjonatasBorges/api-user/errors"
+	"github.com/go-playground/validator/v10"
 )
 
 func HandleServerError(w http.ResponseWriter, err error) {
@@ -45,4 +49,20 @@ func GenerateRandomKey(length int) (string, error) {
 	// Encode em base64 para tornar a chave mais amigável para uso em strings.
 	encodedKey := base64.RawStdEncoding.EncodeToString(key)
 	return encodedKey, nil
+}
+
+func ValidateData(data interface{}) error {
+	validate := validator.New()
+	if err := validate.Struct(data); err != nil {
+		var invalidFields []string
+		for _, e := range err.(validator.ValidationErrors) {
+			invalidFields = append(invalidFields, e.Field())
+		}
+		errMsg := strings.Join(invalidFields, ", ")
+
+		appErr := errors.ErrFieldCannotBeNull.WithArgs(errMsg)
+
+		return appErr
+	}
+	return nil
 }

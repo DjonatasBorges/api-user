@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/DjonatasBorges/api-user/database"
+	"github.com/DjonatasBorges/api-user/errors"
 	"github.com/DjonatasBorges/api-user/models"
 	"github.com/google/uuid"
 )
@@ -76,6 +77,11 @@ func GetUserByEmail(email string) (*sql.Rows, error) {
 		return nil, err
 	}
 
+	if !rows.Next() {
+		return nil, errors.NewAppError(1009, "Usuário não encontrado")
+	}
+
 	db.Close()
+	// Não feche a conexão aqui, pois as linhas ainda estão em uso
 	return rows, nil
 }
