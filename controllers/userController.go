@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/DjonatasBorges/api-user/commons"
@@ -16,7 +15,7 @@ import (
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := services.GetAllUsers()
 	if err != nil {
-		commons.HandleServerError(w, err)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -35,8 +34,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 
 	user, err := services.GetUserById(id)
 	if err != nil {
-		commons.WriteJSONResponse(w, http.StatusNotFound, err)
-		commons.HandleServerError(w, err)
+		commons.WriteJSONResponse(w, http.StatusNotFound, errors.ErrUserNotFound.WithArgs("User"))
 		return
 	}
 
@@ -47,19 +45,37 @@ func PostUser(w http.ResponseWriter, r *http.Request) {
 	var newUser models.User
 	err := json.NewDecoder(r.Body).Decode(&newUser)
 	if err != nil {
-		log.Println("Error decoding request body:", err)
-		http.Error(w, "Failed to decode request body", http.StatusBadRequest)
+		commons.WriteJSONResponse(w, http.StatusBadRequest, errors.ErrInvalidBodyRequest)
 		return
 	}
 
-	user, err := services.PostUser(newUser)
-	if err != nil {
-		commons.HandleServerError(w, err)
+	if err := commons.ValidateData(newUser); err != nil {
+		commons.WriteJSONResponse(w, http.StatusBadRequest, err)
 		return
 	}
 
+	cpfIsValid := commons.ValidateCPF(newUser.Cpf)
+	if !cpfIsValid {
+		commons.WriteJSONResponse(w, http.StatusBadRequest, errors.ErrInvalidCPF)
+		return
+	}
+
+	user, errUser := services.GetUserByEmail(newUser.Email)
+	if user.Email == newUser.Email || user.Cpf == newUser.Cpf {
+		commons.WriteJSONResponse(w, http.StatusBadRequest, errors.ErrUserAlreadyExists)
+	}
+	if errUser != nil {
+		commons.WriteJSONResponse(w, http.StatusInternalServerError, errors.ErrInternalServer)
+	}
+
+	user, errorPost := services.PostUser(newUser)
+	if errorPost != nil {
+		commons.WriteJSONResponse(w, http.StatusBadRequest, errorPost)
+		return
+	}
+
+	w.Header().Set("userId", user.ID.String())
 	w.WriteHeader(http.StatusCreated)
-	commons.WriteJSONResponse(w, http.StatusCreated, user)
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
@@ -75,13 +91,12 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	_, errNotFound := services.GetUserById(id)
 	if errNotFound != nil {
 		commons.WriteJSONResponse(w, http.StatusNotFound, errNotFound)
-		commons.HandleServerError(w, errNotFound)
 		return
 	}
 
 	deleteErr := services.DeleteUser(id)
 	if deleteErr != nil {
-		commons.HandleServerError(w, deleteErr)
+		commons.WriteJSONResponse(w, http.StatusInternalServerError, errors.ErrInternalServer)
 		return
 	}
 

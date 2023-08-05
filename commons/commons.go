@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/DjonatasBorges/api-user/errors"
@@ -65,4 +66,68 @@ func ValidateData(data interface{}) error {
 		return appErr
 	}
 	return nil
+}
+
+func ValidateCPF(cpf string) bool {
+	// Remove caracteres não numéricos do CPF
+	cpf = strings.ReplaceAll(cpf, ".", "")
+	cpf = strings.ReplaceAll(cpf, "-", "")
+
+	// Verifica se o CPF tem 11 dígitos
+	if len(cpf) != 11 {
+		return false
+	}
+
+	// Verifica se todos os dígitos são iguais (CPF inválido)
+	for i := 1; i < 11; i++ {
+		if cpf[i] != cpf[0] {
+			break
+		}
+		if i == 10 {
+			return false
+		}
+	}
+
+	// Calcula o primeiro dígito verificador
+	sum := 0
+	for i := 0; i < 9; i++ {
+		digit, err := strconv.Atoi(string(cpf[i]))
+		if err != nil {
+			return false
+		}
+		sum += digit * (10 - i)
+	}
+	remainder := sum % 11
+	digit1 := 0
+	if remainder >= 2 {
+		digit1 = 11 - remainder
+	}
+
+	// Verifica o primeiro dígito verificador
+	if strconv.Itoa(digit1) != string(cpf[9]) {
+		return false
+	}
+
+	// Calcula o segundo dígito verificador
+	sum = 0
+	for i := 0; i < 10; i++ {
+		digit, err := strconv.Atoi(string(cpf[i]))
+		if err != nil {
+			return false
+		}
+		sum += digit * (11 - i)
+	}
+	remainder = sum % 11
+	digit2 := 0
+	if remainder >= 2 {
+		digit2 = 11 - remainder
+	}
+
+	// Verifica o segundo dígito verificador
+	if strconv.Itoa(digit2) != string(cpf[10]) {
+		return false
+	}
+
+	// CPF válido
+	return true
 }

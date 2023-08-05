@@ -12,6 +12,22 @@
 			"item": [
 				{
 					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.headers.has('Userid')) {",
+									"    const userId = pm.response.headers.get('Userid')",
+									"",
+									"    pm.environment.set('userId', userId)",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -26,7 +42,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Novo Usuário\",\n  \"lastname\": \"Sobrenome\",\n  \"cpf\": \"12345678900\",\n  \"email\": \"teste@teste.com\",\n  \"phone\": \"999999999\",\n  \"password\": \"teste\"\n}",
+							"raw": "{\n  \"name\": \"Novo Usuário\",\n  \"lastname\": \"Sobrenome\",\n  \"cpf\": \"12345678900\",\n  \"email\": \"teste@teste.com\",\n  \"phone\": \"999999999\",\n  \"password\": \"testes123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -283,7 +299,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "aca63c93-f0a0-4434-b996-827656459c74"
+									"value": "{{userId}}"
 								}
 							]
 						}
@@ -404,6 +420,11 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -418,7 +439,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "fa28c2e5-b743-4e62-a23e-63af7de31516"
+									"value": "{{userId}}"
 								}
 							]
 						}
@@ -559,7 +580,7 @@
 									"    const authorizationHeader = pm.response.headers.get('Authorization');",
 									"",
 									"    // Define a variável de ambiente \"token\" com o valor do header",
-									"    pm.collectionVariables.set('token', authorizationHeader);",
+									"    pm.environment.set('token', authorizationHeader);",
 									"}",
 									""
 								],
@@ -603,6 +624,10 @@
 		{
 			"key": "token",
 			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiZXhwIjoxNjI5NjM2MDAwfQ.MjYwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA"
+		},
+		{
+			"key": "userId",
+			"value": ""
 		}
 	]
 }

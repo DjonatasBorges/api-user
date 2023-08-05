@@ -35,4 +35,8 @@ var (
 	ErrInvalidCredentials    = NewAppError(1007, "Invalid credentials")
 	ErrUserNotRegistered     = NewAppError(1008, "User not registered")
 	ErrInvalidTokenSignature = NewAppError(1009, "Invalid token signature")
+	ErrInvalidBodyRequest    = NewAppError(1010, "Invalid body request")
+	ErrUserAlreadyExists     = NewAppError(1011, "User already exists")
+	ErrInvalidCPF            = NewAppError(1012, "Invalid CPF")
+	ErrInternalServer        = NewAppError(5001, "Internal Server Error")
 )
