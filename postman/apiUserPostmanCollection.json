@@ -26,7 +26,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Novo Usuário\",\n  \"lastname\": \"Sobrenome\",\n  \"cpf\": \"12345678900\",\n  \"email\": \"novo.usuario@example.com\",\n  \"phone\": \"999999999\"\n}",
+							"raw": "{\n  \"name\": \"Novo Usuário\",\n  \"lastname\": \"Sobrenome\",\n  \"cpf\": \"12345678900\",\n  \"email\": \"teste@teste.com\",\n  \"phone\": \"999999999\",\n  \"password\": \"teste\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -131,6 +131,11 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -259,6 +264,11 @@
 							{
 								"key": "Accept",
 								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -273,7 +283,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "fa28c2e5-b743-4e62-a23e-63af7de31516"
+									"value": "aca63c93-f0a0-4434-b996-827656459c74"
 								}
 							]
 						}
@@ -522,6 +532,66 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "{{localHost}}/login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verifica se a resposta tem o header \"Authorization\"",
+									"if (pm.response.headers.has('Authorization')) {",
+									"    // Obtém o valor do header \"Authorization\" da resposta",
+									"    const authorizationHeader = pm.response.headers.get('Authorization');",
+									"",
+									"    // Define a variável de ambiente \"token\" com o valor do header",
+									"    pm.collectionVariables.set('token', authorizationHeader);",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"teste2@teste.com\",\n    \"password\": \"teste2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localHost}}/login",
+							"host": [
+								"{{localHost}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [
@@ -529,6 +599,10 @@
 			"key": "baseUrl",
 			"value": "https://exemplo.com.br",
 			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiZXhwIjoxNjI5NjM2MDAwfQ.MjYwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA"
 		}
 	]
 }
