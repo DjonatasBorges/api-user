@@ -61,13 +61,14 @@ func PostUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user, errUser := services.GetUserByEmail(newUser.Email)
-	if user.Email == newUser.Email || user.Cpf == newUser.Cpf {
-		commons.WriteJSONResponse(w, http.StatusBadRequest, errors.ErrUserAlreadyExists)
+	if user != nil {
+		if user.Email == newUser.Email || user.Cpf == newUser.Cpf {
+			commons.WriteJSONResponse(w, http.StatusBadRequest, errors.ErrUserAlreadyExists)
+		}
+		if errUser != nil {
+			commons.WriteJSONResponse(w, http.StatusInternalServerError, errors.ErrInternalServer)
+		}
 	}
-	if errUser != nil {
-		commons.WriteJSONResponse(w, http.StatusInternalServerError, errors.ErrInternalServer)
-	}
-
 	user, errorPost := services.PostUser(newUser)
 	if errorPost != nil {
 		commons.WriteJSONResponse(w, http.StatusBadRequest, errorPost)
