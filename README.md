@@ -33,16 +33,31 @@ Se tudo estiver configurado corretamente, você verá a mensagem "Iniciando o se
 
 ## Testando a API
 
-A API agora está em execução e pronta para aceitar solicitações. Você pode usar ferramentas como cURL, Postman ou o seu navegador para testar as rotas.
+A API agora está em execução e pronta para aceitar solicitações. Para testar as rotas, siga as instruções abaixo. 
 
-Aqui estão algumas das rotas disponíveis:
+1. **Criação de Usuário:**
+   Use a rota `POST http://localhost:8080/users` para criar um novo usuário. Certifique-se de fornecer os dados necessários no corpo da solicitação. Isso criará um usuário no sistema.
 
-- GET http://localhost:8080/users - Obter todos os usuários
-- GET http://localhost:8080/users/{id} - Obter um usuário por ID
-- POST http://localhost:8080/users - Criar um novo usuário
-- DELETE http://localhost:8080/users/{id} - Deletar um usuário por ID
+2. **Autenticação do Usuário:**
+   Após criar um usuário, faça uma solicitação de autenticação para obter uma chave de acesso. Envie um POST para `http://localhost:8080/login` com as credenciais do usuário que você acabou de criar. Isso gerará uma chave de acesso válida.
 
-Observe que você precisa fornecer os dados corretos nos corpos das solicitações POST e nos parâmetros de ID das solicitações DELETE e GET por ID.
+3. **Acesso a Recursos Protegidos:**
+   Agora, com a chave de acesso obtida, você pode usar a chave como parte dos cabeçalhos de suas solicitações para acessar os seguintes endpoints protegidos:
+
+   - **Obter todos os usuários:**
+     Faça uma solicitação GET para `http://localhost:8080/users`, incluindo a chave de acesso no cabeçalho da solicitação. Isso retornará uma lista de todos os usuários registrados.
+
+   - **Obter um usuário por ID:**
+     Use a rota `GET http://localhost:8080/users/{id}` para obter detalhes de um usuário específico pelo ID. Certifique-se de incluir a chave de acesso no cabeçalho da solicitação.
+
+   - **Deletar um usuário:**
+     Para deletar um usuário, envie uma solicitação DELETE para `http://localhost:8080/users/{id}`, onde `{id}` é o ID do usuário que você deseja deletar. Não se esqueça de incluir a chave de acesso no cabeçalho da solicitação.
+
+Lembre-se de que a autenticação é necessária para acessar os endpoints protegidos. Certifique-se de que a chave de acesso esteja presente no cabeçalho de todas as solicitações GET por ID, DELETE e GET. Isso garantirá que apenas usuários autenticados tenham permissão para executar essas ações.
+
+Você pode usar ferramentas como cURL, Postman ou o seu navegador para realizar essas solicitações e testar o funcionamento correto da API. Certifique-se de fornecer os dados corretos nos corpos das solicitações POST e nos parâmetros de ID das solicitações DELETE e GET por ID, além da chave de acesso nos cabeçalhos das solicitações protegidas.
+
+A collection do postman esta atualizada e com captura automática de ids e da chave de acesso. 
 
 ## Encerrando o Serviço
 
