@@ -715,7 +715,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"teste3@teste.com\",\n    \"password\": \"testes123\"\n}",
+							"raw": "{\n    \"email\": \"maria@example.com\",\n    \"password\": \"djow1234\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

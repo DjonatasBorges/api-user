@@ -3,36 +3,18 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/DjonatasBorges/api-user/commons"
 	"github.com/DjonatasBorges/api-user/errors"
+	"github.com/DjonatasBorges/api-user/middleware"
 	"github.com/DjonatasBorges/api-user/services"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtSecret = []byte("your-secret-key")
-
 type LoginCredentials struct {
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required"`
-}
-
-func ParseToken(tokenString string) (*jwt.Token, error) {
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return jwtSecret, nil
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	if !token.Valid {
-		return nil, jwt.ErrSignatureInvalid
-	}
-
-	return token, nil
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -59,32 +41,19 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	expirationTime := time.Now().Add(24 * time.Hour) // Definindo expiração em 60 segundos
+	expirationTime := time.Now().Add(1 * time.Hour)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email": credentials.Email,
 		"exp":   expirationTime.Unix(),
 	})
 
-	tokenString, err := token.SignedString(jwtSecret)
+	tokenString, err := token.SignedString(middleware.JwtSecret)
 	if err != nil {
 		commons.WriteJSONResponse(w, http.StatusUnauthorized, errors.ErrInvalidTokenSignature)
 		return
 	}
 
 	w.Header().Add("Authorization", "Bearer "+tokenString)
-}
-
-func ProtectedEndpoint(w http.ResponseWriter, r *http.Request) {
-
-	commons.WriteJSONResponse(w, http.StatusUnauthorized, errors.ErrMissingAuthToken)
-}
-
-func ExtractToken(r *http.Request) (string, error) {
-	bearerToken := r.Header.Get("Authorization")
-	if len(bearerToken) > 7 && strings.ToUpper(bearerToken[0:7]) == "BEARER " {
-		return bearerToken[7:], nil
-	}
-
-	return "", nil
+	w.WriteHeader(http.StatusOK)
 }

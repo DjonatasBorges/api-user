@@ -78,10 +78,9 @@ func GetUserByEmail(email string) (*sql.Rows, error) {
 	}
 
 	if !rows.Next() {
-		return nil, errors.NewAppError(1009, "Usuário não encontrado")
+		return nil, errors.ErrUserNotFound
 	}
 
 	db.Close()
-	// Não feche a conexão aqui, pois as linhas ainda estão em uso
 	return rows, nil
 }

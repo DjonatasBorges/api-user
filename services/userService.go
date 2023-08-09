@@ -56,7 +56,7 @@ func GetUserByEmail(email string) (*models.User, error) {
 	rows, err := repositories.GetUserByEmail(email)
 
 	if err != nil {
-		return nil, errors.NewAppError(1009, "Usuário não encontrado")
+		return nil, errors.ErrUserNotFound
 	}
 
 	var user models.User
