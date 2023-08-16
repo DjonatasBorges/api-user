@@ -13,9 +13,22 @@ import (
 )
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
-	users, err := services.GetAllUsers()
+	queryParams := r.URL.Query()
+
+	name := queryParams.Get("name")
+
+	users, err := services.GetAllUsers(name)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		commons.WriteJSONResponse(w, http.StatusInternalServerError, map[string]interface{}{
+			"error": err.Error(),
+		})
+		return
+	}
+	if users == nil {
+		w.WriteHeader(http.StatusOK)
+		emptyResponse := make([]interface{}, 0)
+		json.NewEncoder(w).Encode(emptyResponse)
 		return
 	}
 

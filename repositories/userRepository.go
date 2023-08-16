@@ -9,18 +9,28 @@ import (
 	"github.com/google/uuid"
 )
 
-func GetAllUsers() (*sql.Rows, error) {
+func GetAllUsers(name string) (*sql.Rows, error) {
 	db := database.ConnectDB()
+	defer db.Close()
 
-	query := "SELECT * FROM users"
-	rows, err := db.Query(query)
+	var query string
+	var rows *sql.Rows
+	var err error
 
-	db.Close()
+	if name != "" {
+		query = "SELECT * FROM users WHERE LOWER(name) = LOWER($1) OR LOWER(lastname) = LOWER($1)"
+		rows, err = db.Query(query, name)
+	} else {
+		query = "SELECT * FROM users"
+		rows, err = db.Query(query)
+	}
+
 	return rows, err
 }
 
 func SaveUser(newUser models.User) (*models.User, error) {
 	db := database.ConnectDB()
+	defer db.Close()
 
 	query := `
 		INSERT INTO users (name, lastname, cpf, email, phone, password)
@@ -38,24 +48,22 @@ func SaveUser(newUser models.User) (*models.User, error) {
 		return nil, err
 	}
 	newUser.ID = uuid
-
-	defer db.Close()
-
 	return &newUser, nil
 }
 
 func GetUserById(id uuid.UUID) *sql.Row {
 	db := database.ConnectDB()
+	defer db.Close()
 
 	query := "SELECT * FROM users WHERE id = $1"
 	row := db.QueryRow(query, id)
 
-	db.Close()
 	return row
 }
 
 func DeleteUser(uuid uuid.UUID) error {
 	db := database.ConnectDB()
+	defer db.Close()
 
 	query := "DELETE FROM users WHERE id = $1"
 	_, err := db.Exec(query, uuid)
@@ -63,13 +71,12 @@ func DeleteUser(uuid uuid.UUID) error {
 		return err
 	}
 
-	db.Close()
-
 	return nil
 }
 
 func GetUserByEmail(email string) (*sql.Rows, error) {
 	db := database.ConnectDB()
+	defer db.Close()
 
 	query := "SELECT * FROM users WHERE email = $1"
 	rows, err := db.Query(query, email)
@@ -81,6 +88,5 @@ func GetUserByEmail(email string) (*sql.Rows, error) {
 		return nil, errors.ErrUserNotFound
 	}
 
-	db.Close()
 	return rows, nil
 }

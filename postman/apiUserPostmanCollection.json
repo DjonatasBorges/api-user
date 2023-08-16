@@ -283,6 +283,13 @@
 							],
 							"path": [
 								"users"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "souza",
+									"disabled": true
+								}
 							]
 						}
 					},

@@ -9,8 +9,8 @@ import (
 	"github.com/google/uuid"
 )
 
-func GetAllUsers() ([]models.User, error) {
-	rows, err := repositories.GetAllUsers()
+func GetAllUsers(name string) ([]models.User, error) {
+	rows, err := repositories.GetAllUsers(name)
 	if err != nil {
 		return nil, err
 	}
